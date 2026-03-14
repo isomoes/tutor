@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{custom}[2024/02/17 Custom class for weekly reports]
+\ProvidesClass{note}[2024/02/17 Custom class for weekly reports]
 
 \LoadClass{article}
 % Report-specific packages
@@ -29,9 +29,17 @@
 \RequirePackage{titlesec}
 
 \RequirePackage{ctex}
-% Choose Chinese fonts
-\setCJKmainfont{Songti SC} % Main Chinese font (Songti)
-\setCJKsansfont{Lantinghei TC} % Sans-serif Chinese font (Heiti)
+% Prefer macOS CJK fonts when available, otherwise fall back to TeX Live fonts.
+\IfFontExistsTF{Songti SC}{
+  \setCJKmainfont{Songti SC}
+}{
+  \setCJKmainfont{Source Han Serif CN}
+}
+\IfFontExistsTF{Lantinghei TC}{
+  \setCJKsansfont{Lantinghei TC}
+}{
+  \setCJKsansfont{Source Han Sans CN}
+}
 % \setCJKmonofont{Maple Mono NF CN} % Monospaced Chinese font (Fangsong)
 
 %% Customize the title format
