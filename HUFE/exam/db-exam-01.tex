@@ -1,0 +1,181 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{purple},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  frame=single,
+}
+
+\title{HUFE 数据库原理模拟试卷 A}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+本卷依据最新考纲与课程时间安排整理，重点覆盖关系模型、SQL、完整性、范式、数据库设计与事务并发控制。
+
+\section*{一、单项选择题（15题，每题2分，共30分）}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 数据库系统的数据独立性是指（\hspace{0.8cm}）。
+
+A．不会因为数据模型变化而影响 DBMS
+\quad B．不会因为系统数据存储结构与逻辑结构变化而影响应用程序
+\quad C．数据之间彼此独立
+\quad D．数据库与操作系统相互独立
+
+\item 在概念模型中，客观存在并可相互区别的事物称为（\hspace{0.8cm}）。
+
+A．实体 \quad B．属性 \quad C．联系 \quad D．关系
+
+\item 关系模型的三个组成部分中，不包括（\hspace{0.8cm}）。
+
+A．数据结构 \quad B．数据操作 \quad C．完整性规则 \quad D．编译系统
+
+\item 设关系 $R(A,B,C)$ 和 $S(B,C,D)$，则 $R$ 与 $S$ 进行自然连接后的属性个数为（\hspace{0.8cm}）。
+
+A．3 \quad B．4 \quad C．5 \quad D．6
+
+\item SQL 中，用于向用户授予权限的语句是（\hspace{0.8cm}）。
+
+A．REVOKE \quad B．GRANT \quad C．DEFINE \quad D．ALLOW
+
+\item 下列涉及空值的判断中，正确的是（\hspace{0.8cm}）。
+
+A．AGE = NULL \quad B．AGE <> NULL \quad C．AGE IS NULL \quad D．AGE NOT NULL
+
+\item 学生表 Student(Sno, Sname, Sdept) 中，规定学号必须是 8 位字符，这属于（\hspace{0.8cm}）。
+
+A．实体完整性 \quad B．参照完整性 \quad C．用户定义完整性 \quad D．视图完整性
+
+\item 在关系代数中，从关系中选取若干列的运算称为（\hspace{0.8cm}）。
+
+A．选择 \quad B．连接 \quad C．投影 \quad D．除法
+
+\item 若事务 $T$ 对数据对象 $A$ 加了 X 锁，则其他事务（\hspace{0.8cm}）。
+
+A．只能读 A \quad B．只能写 A \quad C．不能再对 A 加任何锁 \quad D．仍可加 S 锁
+
+\item 在数据库设计过程中，“确定关系模式、主码和外码”属于（\hspace{0.8cm}）。
+
+A．需求分析 \quad B．概念结构设计 \quad C．逻辑结构设计 \quad D．物理结构设计
+
+\item 事务的持久性是指（\hspace{0.8cm}）。
+
+A．事务中操作要么全做要么全不做
+\quad B．事务一旦提交，其对数据库的修改就是永久的
+\quad C．并发事务之间互不干扰
+\quad D．事务前后数据库都满足完整性约束
+
+\item 若属性组 $X$ 能唯一标识关系中的一个元组，且 $X$ 的任何真子集都不能唯一标识元组，则 $X$ 称为（\hspace{0.8cm}）。
+
+A．外码 \quad B．候选码 \quad C．主属性 \quad D．域
+
+\item 已知函数依赖 $X \rightarrow Y$，$Y \rightarrow Z$，根据 Armstrong 公理系统可推出（\hspace{0.8cm}）。
+
+A．$Y \rightarrow X$ \quad B．$XZ \rightarrow Y$ \quad C．$X \rightarrow Z$ \quad D．$Z \rightarrow X$
+
+\item 一个 $M:N$ 联系转换为关系模式后，其主码通常是（\hspace{0.8cm}）。
+
+A．任取一个实体的主码
+\quad B．两个实体主码的组合
+\quad C．联系类型名
+\quad D．联系的全部属性
+
+\item 下列并发操作中，不会产生冲突的是（\hspace{0.8cm}）。
+
+A．$R_1(A)$ 与 $W_2(A)$ \quad B．$W_1(A)$ 与 $W_2(A)$ \quad C．$R_1(A)$ 与 $R_2(A)$ \quad D．$W_1(A)$ 与 $R_2(A)$
+\end{enumerate}
+
+\section*{二、填空题（5题，每题2分，共10分）}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 数据库系统的三级模式结构包括外模式、\underline{\hspace{2cm}}和内模式。
+\item 数据模型由数据结构、\underline{\hspace{2cm}}和数据约束三部分组成。
+\item SQL 的中文名称是\underline{\hspace{3cm}}。
+\item 数据完整性通常包括实体完整性、参照完整性和\underline{\hspace{2cm}}完整性。
+\item 并发操作带来的三类典型不一致性问题包括丢失修改、不可重复读和\underline{\hspace{2cm}}。
+\end{enumerate}
+
+\section*{三、判断题（10题，每题2分，共20分）}
+
+\begin{enumerate}[itemsep=0.6em]
+\item 视图中只保存定义，一般不保存视图对应的数据。 （\hspace{0.8cm}）
+\item 关系中的列和行都允许随意重复。 （\hspace{0.8cm}）
+\item SQL 既可以交互式使用，也可以嵌入高级语言中使用。 （\hspace{0.8cm}）
+\item 外键属性的值必须与被参照关系中的主码值相同，不能取空值。 （\hspace{0.8cm}）
+\item 若一个关系模式属于 BCNF，则它一定属于 3NF。 （\hspace{0.8cm}）
+\item 关系代数中的选择运算相当于对表做垂直分割。 （\hspace{0.8cm}）
+\item 一个事务只有执行 COMMIT 后，其更新结果才真正永久写入数据库。 （\hspace{0.8cm}）
+\item 在 E-R 图中，矩形表示联系，菱形表示实体。 （\hspace{0.8cm}）
+\item 数据库恢复的依据之一是日志文件。 （\hspace{0.8cm}）
+\item 两段锁协议可以保证调度的可串行性。 （\hspace{0.8cm}）
+\end{enumerate}
+
+\section*{四、简答题（2题，每题5分，共10分）}
+
+\begin{enumerate}[itemsep=1em]
+\item 简述数据库系统中“模式/内模式映像”和“外模式/模式映像”分别支持哪种数据独立性。
+\item 什么是 1NF、2NF、3NF？请用简洁语言说明它们的判定要点。
+\end{enumerate}
+
+\section*{五、综合应用题（共30分）}
+
+\subsection*{1. SQL 与关系代数题（20分）}
+
+已知有如下关系模式：
+
+\begin{align*}
+&\text{Student}(\underline{Sno}, Sname, Ssex, Sdept, Sage)\\
+&\text{Course}(\underline{Cno}, Cname, Ccredit, Tno)\\
+&\text{SC}(\underline{Sno}, \underline{Cno}, Grade)
+\end{align*}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 写出创建选课表 SC 的 SQL 语句，要求指出主码以及两个外码。（6分）
+\item 查询“计算机”系学生的学号、姓名。（3分）
+\item 查询选修了“数据库原理”课程的学生姓名及成绩。（3分）
+\item 查询没有任何选课记录的学生姓名。（4分）
+\item 用关系代数表示：查询选修课程号为 \texttt{C2} 的学生姓名。（4分）
+\end{enumerate}
+
+\subsection*{2. 设计与理论题（10分）}
+
+某培训中心需要管理“教师”“班级”“学员”三个实体。一个教师可以负责多个班级，一个班级只由一名教师负责；一个学员可以选修多个班级，一个班级可以有多个学员。已知：
+
+\begin{itemize}[itemsep=0.4em]
+\item 教师：工号、姓名、职称
+\item 班级：班级号、班级名、开课日期
+\item 学员：学号、姓名、性别、联系电话
+\end{itemize}
+
+请回答：
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 画出该系统的 E-R 图，可用文字标注联系的基数。（4分）
+\item 将该 E-R 图转换为关系模型，并指出各关系的主码和外码。（6分）
+\end{enumerate}
+
+\end{document}

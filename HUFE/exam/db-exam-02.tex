@@ -1,0 +1,194 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{purple},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  frame=single,
+}
+
+\title{HUFE 数据库原理模拟试卷 B}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+本卷依据最新考纲与课程时间安排整理，适合作为第二套综合训练题，重点训练关系代数、SQL、规范化和事务恢复。
+
+\section*{一、单项选择题（15题，每题2分，共30分）}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 长期存储在计算机内、有组织、可共享的数据集合称为（\hspace{0.8cm}）。
+
+A．数据库 \quad B．数据库系统 \quad C．数据库管理系统 \quad D．数据模型
+
+\item 在关系模型中，一个关系是（\hspace{0.8cm}）。
+
+A．一个二维表 \quad B．一个树结构 \quad C．一个网状结构 \quad D．一个线性表
+
+\item 下列关于视图的叙述中，错误的是（\hspace{0.8cm}）。
+
+A．视图是虚表
+\quad B．视图可以建立在一个或多个基本表之上
+\quad C．数据库中既保存视图定义，也总是保存视图数据
+\quad D．可以在视图上再定义视图
+
+\item SQL 语言中，用于回收权限的语句是（\hspace{0.8cm}）。
+
+A．DELETE \quad B．REVOKE \quad C．DROP \quad D．CANCEL
+
+\item 关系代数表达式 $\sigma_{Sdept='CS'}(Student)$ 表示（\hspace{0.8cm}）。
+
+A．投影出 CS 系学生的所有属性
+\quad B．选择出 CS 系学生的所有元组
+\quad C．连接 Student 与 CS 关系
+\quad D．删除 CS 系学生
+
+\item 若关系模式 $R(U,F)$ 中不存在部分函数依赖，但存在传递函数依赖，则该关系模式最高属于（\hspace{0.8cm}）。
+
+A．1NF \quad B．2NF \quad C．3NF \quad D．BCNF
+
+\item 在数据库设计中，构造 E-R 图主要属于（\hspace{0.8cm}）。
+
+A．需求分析阶段 \quad B．概念结构设计阶段 \quad C．逻辑结构设计阶段 \quad D．物理结构设计阶段
+
+\item 事务的原子性是指（\hspace{0.8cm}）。
+
+A．事务内部操作不可分割，要么都做要么都不做
+\quad B．事务结束后数据永久保存
+\quad C．事务执行前后数据库保持一致
+\quad D．并发事务之间互不影响
+
+\item 若关系 $R$ 和 $S$ 做并运算，则要求它们（\hspace{0.8cm}）。
+
+A．具有相同的主码 \quad B．同名属性个数相同 \quad C．必须同元 \quad D．必须有公共属性
+
+\item 在 E-R 图中，属性通常用（\hspace{0.8cm}）表示。
+
+A．矩形 \quad B．菱形 \quad C．椭圆 \quad D．箭头
+
+\item 下列 SQL 查询语句中，可去除重复元组的关键字是（\hspace{0.8cm}）。
+
+A．UNIQUE \quad B．DISTINCT \quad C．ORDER BY \quad D．GROUP
+
+\item 已知事务 $T_1$ 对数据项 $A$ 已加 S 锁，则事务 $T_2$ 对 $A$（\hspace{0.8cm}）。
+
+A．只能加 X 锁 \quad B．只能加 S 锁 \quad C．不能加任何锁 \quad D．一定能加 X 锁
+
+\item 日志文件的主要作用是（\hspace{0.8cm}）。
+
+A．提高查询速度 \quad B．进行数据库恢复 \quad C．实现数据加密 \quad D．定义视图
+
+\item 关于函数依赖的叙述，正确的是（\hspace{0.8cm}）。
+
+A．若 $X \rightarrow Y$，则 $Y \rightarrow X$
+\quad B．若 $X \rightarrow Y$，则 $XZ \rightarrow YZ$
+\quad C．若 $XY \rightarrow Z$，则 $X \rightarrow Z$
+\quad D．若 $X \rightarrow Y$，则 $X$ 一定是主码
+
+\item 并发操作引起的“读脏数据”是指（\hspace{0.8cm}）。
+
+A．读取了未提交事务修改的数据
+\quad B．读取了重复数据
+\quad C．读取了已提交事务的数据
+\quad D．读取了加密数据
+\end{enumerate}
+
+\section*{二、填空题（5题，每题2分，共10分）}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 数据库管理系统的英文缩写是\underline{\hspace{2cm}}。
+\item 关系代数中，专门的关系运算通常包括选择、投影、连接和\underline{\hspace{2cm}}。
+\item SQL 语言按功能通常可分为 DDL、DML、DCL，其中 DCL 表示\underline{\hspace{3cm}}。
+\item 在关系数据库中，能够唯一标识一个元组的最小属性组称为\underline{\hspace{2cm}}。
+\item 数据库恢复技术中，常用的两类转储方式是静态转储和\underline{\hspace{2cm}}。
+\end{enumerate}
+
+\section*{三、判断题（10题，每题2分，共20分）}
+
+\begin{enumerate}[itemsep=0.6em]
+\item 数据库系统由数据库、DBMS、应用程序和 DBA 等组成。 （\hspace{0.8cm}）
+\item 在关系中，属性的顺序和元组的顺序都无关紧要。 （\hspace{0.8cm}）
+\item 主码可以取空值。 （\hspace{0.8cm}）
+\item SELECT 属于 SQL 的数据查询功能。 （\hspace{0.8cm}）
+\item 外连接一定会减少结果中的元组数。 （\hspace{0.8cm}）
+\item 所有 3NF 的关系模式都一定属于 BCNF。 （\hspace{0.8cm}）
+\item E-R 图转换为关系模型时，1:N 联系通常在 N 端引入 1 端主码作为外码。 （\hspace{0.8cm}）
+\item 可串行化调度的执行结果应与某个串行调度等价。 （\hspace{0.8cm}）
+\item 检查点技术有助于缩短数据库恢复时间。 （\hspace{0.8cm}）
+\item 授权和回收权限属于数据库安全性控制内容。 （\hspace{0.8cm}）
+\end{enumerate}
+
+\section*{四、简答题（2题，每题5分，共10分）}
+
+\begin{enumerate}[itemsep=1em]
+\item 简述关系模型中实体完整性和参照完整性的含义。
+\item 什么是事务？请写出事务的四个基本特性（ACID）。
+\end{enumerate}
+
+\section*{五、综合应用题（共30分）}
+
+\subsection*{1. SQL 与规范化题（18分)}
+
+已知如下关系模式：
+
+\begin{align*}
+R(\text{订单号}, \text{客户号}, \text{客户名}, \text{商品号}, \text{商品名}, \text{数量}, \text{单价})
+\end{align*}
+
+并满足下列语义：
+
+\begin{itemize}[itemsep=0.4em]
+\item 一个订单只对应一个客户；
+\item 一个客户号只对应一个客户名；
+\item 一个商品号只对应一个商品名和单价；
+\item 一个订单中一种商品只出现一次。
+\end{itemize}
+
+请回答：
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 写出该关系模式的基本函数依赖。（6分）
+\item 写出该关系模式的候选码。（4分）
+\item 判断该关系模式最高达到第几范式，并说明理由。（4分）
+\item 将其分解到 3NF。（4分）
+\end{enumerate}
+
+\subsection*{2. 查询与恢复题（12分)}
+
+已知学生选课数据库中有如下三个关系：
+
+\begin{align*}
+&\text{Student}(\underline{Sno}, Sname, Sdept)\\
+&\text{Course}(\underline{Cno}, Cname, Credit)\\
+&\text{SC}(\underline{Sno}, \underline{Cno}, Grade)
+\end{align*}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 用 SQL 查询平均成绩大于 80 分的学生学号和平均成绩。（4分）
+\item 用 SQL 查询至少选修了两门课程的学生姓名。（4分）
+\item 简述“系统故障”发生后，利用日志文件进行恢复的一般思路。（4分）
+\end{enumerate}
+
+\end{document}
