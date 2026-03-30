@@ -1,0 +1,92 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{HUFE 数据库原理模拟试卷 B 参考答案}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+\section*{一、单项选择题}
+
+1.A\quad 2.A\quad 3.C\quad 4.B\quad 5.B\quad 6.B\quad 7.B\quad 8.A\quad 9.C\quad 10.C\quad 11.B\quad 12.B\quad 13.B\quad 14.B\quad 15.A
+
+\section*{二、填空题}
+
+\begin{enumerate}
+\item DBMS
+\item 除法
+\item 数据控制语言
+\item 候选码
+\item 动态转储
+\end{enumerate}
+
+\section*{三、判断题}
+
+1.$\surd$\quad 2.$\surd$\quad 3.$\times$\quad 4.$\surd$\quad 5.$\times$\quad 6.$\times$\quad 7.$\surd$\quad 8.$\surd$\quad 9.$\surd$\quad 10.$\surd$
+
+\section*{四、简答题}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 实体完整性要求主码不能为空且唯一；参照完整性要求外码的取值要么为空，要么等于被参照关系中的某个主码值。
+\item 事务是数据库中一个不可分割的逻辑工作单位。ACID 分别是原子性、一致性、隔离性、持久性。
+\end{enumerate}
+
+\section*{五、综合应用题}
+
+\subsection*{1. SQL 与规范化题}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 基本函数依赖：\newline
+订单号 $\rightarrow$ 客户号\newline
+客户号 $\rightarrow$ 客户名\newline
+商品号 $\rightarrow$ 商品名，单价\newline
+(订单号，商品号) $\rightarrow$ 数量
+\item 候选码：(订单号，商品号)
+\item 最高只达到 1NF。因为存在非主属性对候选码的部分依赖，如订单号 $\rightarrow$ 客户号，商品号 $\rightarrow$ 商品名、单价。
+\item 可分解为：\newline
+订单(\underline{订单号}, 客户号)\newline
+客户(\underline{客户号}, 客户名)\newline
+商品(\underline{商品号}, 商品名, 单价)\newline
+订单明细(\underline{订单号}, \underline{商品号}, 数量)
+\end{enumerate}
+
+\subsection*{2. 查询与恢复题}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item
+\begin{lstlisting}[language=SQL]
+SELECT Sno, AVG(Grade) AS AvgGrade
+FROM SC
+GROUP BY Sno
+HAVING AVG(Grade) > 80;
+\end{lstlisting}
+
+\item
+\begin{lstlisting}[language=SQL]
+SELECT S.Sname
+FROM Student S, SC
+WHERE S.Sno = SC.Sno
+GROUP BY S.Sno, S.Sname
+HAVING COUNT(*) >= 2;
+\end{lstlisting}
+
+\item 系统故障恢复通常先从检查点或最近一致状态开始，根据日志文件对已提交事务进行 REDO，对未完成事务进行 UNDO，使数据库恢复到一致状态。
+\end{enumerate}
+
+\end{document}

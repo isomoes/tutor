@@ -1,0 +1,91 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{HUFE 数据结构模拟试卷 A 参考答案}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+\section*{一、填空题}
+
+\begin{enumerate}
+\item 时间；空间
+\item $n-i$
+\item 后进先出；先进先出
+\item 双亲（前驱）；双亲（前驱）
+\item 后序
+\item $2^h-1$
+\item 先序
+\item 中序
+\item 顺序
+\item $O(n)$
+\end{enumerate}
+
+\section*{二、单项选择题}
+
+1.B\quad 2.D\quad 3.C\quad 4.B\quad 5.A\quad 6.D\quad 7.B\quad 8.C\quad 9.B\quad 10.C
+
+\section*{三、判断题}
+
+1.$\times$\quad 2.$\surd$\quad 3.$\surd$\quad 4.$\times$\quad 5.$\surd$\quad 6.$\surd$\quad 7.$\surd$\quad 8.$\times$\quad 9.$\surd$\quad 10.$\surd$
+
+\section*{四、简答题}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 顺序表地址连续、支持随机访问、插入删除需移动元素；单链表地址不连续、不支持随机访问、已知位置后插入删除更方便。
+\item (1) 可以。过程如 push(A) push(B) pop(B) pop(A) push(C) push(D) push(E) pop(E) pop(D) pop(C)。\newline
+(2) 不可以。输出 C 后栈中还压有 A、B，E 不可能先于 A、B 出栈。
+\item 二叉排序树满足左子树关键字小于根、右子树关键字大于根。删除时分三种：删除叶子结点；删除只有一个子树的结点；删除有两个子树的结点，可用直接前驱或直接后继替代。
+\item 直接插入排序是把当前记录插入前面有序区；冒泡排序是相邻比较交换；简单选择排序是每趟选最小元素放到前面。稳定的有直接插入排序、冒泡排序；简单选择排序不稳定。
+\end{enumerate}
+
+\section*{五、综合应用题}
+
+\begin{enumerate}[itemsep=1em]
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 二叉树结构：A 为根；左子树为 B，B 的左孩子为 D，右孩子为 E；右子树为 C，C 的左孩子为 F，右孩子为 G。
+\item 后序序列：DEBFGCA。
+\item 叶子结点：D、E、F、G。
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 一种 DFS 序列：A，B，C，E，D。
+\item 一种 BFS 序列：A，B，D，C，E。
+\item Prim 选边过程可为：AB(2)，AD(4)，DE(2)，EC(1)。最小生成树总权值为 9。
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 第1趟：18，27，32，18，41，22，44，59；第2趟：18，18，27，32，41，22，44，59。
+\item $H(key)=key\bmod 7$：\newline
+最终哈希表为：\newline
+地址0: 27\newline
+地址1: 22\newline
+地址2: 44\newline
+地址3: 18 $\rightarrow$ 32 $\rightarrow$ 18 $\rightarrow$ 59\newline
+地址4: 空\newline
+地址5: 空\newline
+地址6: 41
+\item 因为折半查找要求表按关键字有序，而原始序列无序，所以不能直接使用。
+\end{enumerate}
+\end{enumerate}
+
+\end{document}

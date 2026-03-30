@@ -1,0 +1,107 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{HUFE 数据库原理模拟试卷 A 参考答案}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+\section*{一、单项选择题}
+
+1.B\quad 2.A\quad 3.D\quad 4.B\quad 5.B\quad 6.C\quad 7.C\quad 8.C\quad 9.C\quad 10.C\quad 11.B\quad 12.B\quad 13.C\quad 14.B\quad 15.C
+
+\section*{二、填空题}
+
+\begin{enumerate}
+\item 模式（概念模式）
+\item 数据操作
+\item 结构化查询语言
+\item 用户定义
+\item 读脏数据
+\end{enumerate}
+
+\section*{三、判断题}
+
+1.$\surd$\quad 2.$\times$\quad 3.$\surd$\quad 4.$\times$\quad 5.$\surd$\quad 6.$\times$\quad 7.$\surd$\quad 8.$\times$\quad 9.$\surd$\quad 10.$\surd$
+
+\section*{四、简答题}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 模式/内模式映像支持物理数据独立性；外模式/模式映像支持逻辑数据独立性。
+\item 1NF：属性不可再分；2NF：在 1NF 基础上，非主属性完全函数依赖于每个候选码；3NF：在 2NF 基础上，不存在非主属性对码的传递函数依赖。
+\end{enumerate}
+
+\section*{五、综合应用题}
+
+\subsection*{1. SQL 与关系代数题}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item
+\begin{lstlisting}[language=SQL]
+CREATE TABLE SC (
+    Sno CHAR(10),
+    Cno CHAR(10),
+    Grade DECIMAL(5,2),
+    PRIMARY KEY (Sno, Cno),
+    FOREIGN KEY (Sno) REFERENCES Student(Sno),
+    FOREIGN KEY (Cno) REFERENCES Course(Cno)
+);
+\end{lstlisting}
+
+\item
+\begin{lstlisting}[language=SQL]
+SELECT Sno, Sname
+FROM Student
+WHERE Sdept = '计算机';
+\end{lstlisting}
+
+\item
+\begin{lstlisting}[language=SQL]
+SELECT S.Sname, SC.Grade
+FROM Student S, Course C, SC
+WHERE S.Sno = SC.Sno
+  AND C.Cno = SC.Cno
+  AND C.Cname = '数据库原理';
+\end{lstlisting}
+
+\item
+\begin{lstlisting}[language=SQL]
+SELECT Sname
+FROM Student
+WHERE Sno NOT IN (SELECT Sno FROM SC);
+\end{lstlisting}
+
+\item
+\[
+\Pi_{Sname}(\sigma_{Cno='C2'}(Student \bowtie SC))
+\]
+\end{enumerate}
+
+\subsection*{2. 设计与理论题}
+
+\begin{enumerate}[label=(\arabic*), itemsep=0.8em]
+\item 联系：教师与班级为 1:N；学员与班级为 M:N。
+\item 可转换为：\newline
+教师(\underline{工号}, 姓名, 职称)\newline
+班级(\underline{班级号}, 班级名, 开课日期, 工号)\quad 外码工号引用教师\newline
+学员(\underline{学号}, 姓名, 性别, 联系电话)\newline
+选修(\underline{学号}, \underline{班级号})\quad 两个外码分别引用学员和班级。
+\end{enumerate}
+
+\end{document}

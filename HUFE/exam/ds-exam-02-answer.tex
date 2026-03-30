@@ -1,0 +1,86 @@
+\documentclass{../../note}
+
+\usepackage{amsthm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc,matrix,decorations.pathreplacing}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\title{HUFE 数据结构模拟试卷 B 参考答案}
+\author{isomo}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\fontsize{12pt}{14.4pt}\selectfont
+\maketitle
+
+\section*{一、填空题}
+
+\begin{enumerate}
+\item 线性；非线性
+\item $n-i+1$
+\item 队头；队尾
+\item $2^k-1$
+\item $n(n-1)$
+\item 层次
+\item $\alpha=n/m$
+\item $O(n\log n)$
+\item 顺序
+\item 稳定性
+\end{enumerate}
+
+\section*{二、单项选择题}
+
+1.C\quad 2.B\quad 3.B\quad 4.C\quad 5.B\quad 6.A\quad 7.A\quad 8.C\quad 9.D\quad 10.D
+
+\section*{三、判断题}
+
+1.$\times$\quad 2.$\surd$\quad 3.$\surd$\quad 4.$\times$\quad 5.$\surd$\quad 6.$\times$\quad 7.$\times$\quad 8.$\times$\quad 9.$\times$\quad 10.$\surd$
+
+\section*{四、简答题}
+
+\begin{enumerate}[itemsep=0.8em]
+\item 顺序栈实现简单、随机定位栈内元素方便，但容量固定；链栈空间可动态分配，不易假溢出，但每个结点需额外指针域。
+\item 完全二叉树是除最后一层外其余各层都满，最后一层结点集中在左侧；满二叉树是每层都满。满二叉树一定是完全二叉树，反之不一定。
+\item 邻接矩阵空间复杂度为 $O(n^2)$，适合稠密图；邻接表空间复杂度约为 $O(n+e)$，适合稀疏图。邻接矩阵判断两点是否邻接快，邻接表找某顶点全部邻接点更方便。
+\item 哈希冲突指不同关键字映射到同一地址。常见方法：开放定址法，冲突后按探测序列找空位；链地址法，同一地址上的元素用链表连接。
+\end{enumerate}
+
+\section*{五、综合应用题}
+
+\begin{enumerate}[itemsep=1em]
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 构造结果：45 为根；左子树 24，其左孩子 12，右孩子 37；右子树 53，其右孩子 93，93 的左孩子为 50。
+\item 中序遍历：12，24，37，45，50，53，93。
+\item 删除 24 后，可用其直接后继 37 替代，结果为：45 为根；左子树根为 37，左孩子为 12；右子树不变。
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 一种 DFS 序列：A，B，D，E，C。
+\item 从 A 出发最短路径长度：A 到 A 为 0，B 为 6，C 为 2，D 为 3，E 为 5。
+\item A 到 E 的最短路径：A $\rightarrow$ C $\rightarrow$ D $\rightarrow$ E，长度为 5。
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 冒泡排序前两趟：\newline
+第1趟：38，49，65，76，13，27，49，97\newline
+第2趟：38，49，65，13，27，49，76，97
+\item 简单选择排序前两趟：\newline
+第1趟：13，38，65，97，76，49，27，49\newline
+第2趟：13，27，65，97，76，49，38，49
+\item 冒泡排序比较次数较多、交换次数也较多，但稳定；简单选择排序交换次数较少，但不稳定。
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
