@@ -1,0 +1,825 @@
+\documentclass{../../note}
+
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{red!60!black},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=6pt,
+  breaklines=true,
+  frame=single
+}
+
+\title{HUFE 数据库第一讲}
+\author{isomoes}
+
+\begin{document}
+
+\maketitle
+
+\section{本次课定位}
+
+本次课对应 5 次课安排中的第 4 次课，时长 3 小时，内容覆盖\textbf{数据库绪论、关系模型、SQL 语言}。这是数据库部分的起步讲，但也是后面安全性、完整性、规范化、数据库设计等内容的基础讲。
+
+这一讲的难点不在于概念多，而在于要把三条线连起来理解：\textbf{数据库系统是什么、关系模型怎么表示数据、SQL 怎样对关系进行操作}。如果这三条线没有连起来，后面做关系代数题、SQL 查询题和设计题时会非常被动。
+
+\subsection{本次课目标}
+
+\begin{itemize}
+  \item 理解数据、数据库、数据库管理系统、数据库系统四个基本概念。
+  \item 掌握数据管理技术的发展过程，理解数据库系统相对文件系统的优势。
+  \item 掌握概念模型、数据模型三要素、三级模式结构、两级映像与数据独立性。
+  \item 理解关系、属性、域、元组、码、主键、外键等关系模型核心术语。
+  \item 掌握关系代数中的选择、投影、连接以及常见集合运算。
+  \item 掌握 SQL 中 DDL、DML、基本查询、连接查询、嵌套查询、空值和视图的常见考法。
+  \item 能处理数据库部分常见的概念判断题、关系代数表达式题和 SQL 查询改写题。
+\end{itemize}
+
+\subsection{考试导向提醒}
+
+这一讲在试卷中通常属于\textbf{基础高频 + 直接得分区}，常见出题方式主要有四类：
+
+\begin{itemize}
+  \item \textbf{概念判断题}：如 DB、DBMS、DBS 的区别，三级模式结构，两级映像，逻辑独立性与物理独立性。
+  \item \textbf{术语辨析题}：如关系、关系模式、元组、属性、主键、外键、完整性约束等。
+  \item \textbf{关系代数题}：将自然语言查询改写成选择、投影、连接表达式。
+  \item \textbf{SQL 查询题}：单表查询、多表连接、子查询、空值判断、视图定义。
+\end{itemize}
+
+所以本讲不能只停留在“背名词”，而要形成一条稳定分析主线：\textbf{系统层面看数据库，逻辑层面看关系模型，操作层面看 SQL}。
+
+\subsection{3小时建议节奏}
+
+\begin{center}
+\begin{tabular}{|c|c|p{9cm}|}
+\hline
+阶段 & 时间 & 主要内容 \\
+\hline
+第1段 & 35分钟 & 绪论：四个基本概念、数据管理技术发展、数据模型、三级模式结构 \\
+\hline
+第2段 & 45分钟 & 关系模型：关系的形式化定义、关系的性质、主键外键、完整性 \\
+\hline
+第3段 & 35分钟 & 关系代数：选择、投影、连接、并差交、笛卡尔积，做题主线建立 \\
+\hline
+第4段 & 45分钟 & SQL：建表、查询、连接、子查询、更新、空值与视图 \\
+\hline
+第5段 & 20分钟 & 例题串讲、课堂练习和易错点回顾 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{数据库绪论}
+
+\subsection{四个基本概念}
+
+数据库这一章一开始最容易混的就是四个英文缩写。一定要分清：
+
+\begin{enumerate}
+  \item \textbf{数据（Data）}：描述客观事物的符号记录，是数据库中存储的基本对象。
+  \item \textbf{数据库（DB）}：长期存储在计算机内、有组织、可共享的大量数据集合。
+  \item \textbf{数据库管理系统（DBMS）}：位于用户与操作系统之间的数据管理软件，用来定义、操纵、控制和维护数据库。
+  \item \textbf{数据库系统（DBS）}：由数据库、DBMS、应用程序、数据库管理员和相关硬件环境等共同组成的完整系统。
+\end{enumerate}
+
+最稳妥的理解方式是：
+
+\begin{itemize}
+  \item DB 是\textbf{数据集合本身}；
+  \item DBMS 是\textbf{管理这些数据的软件}；
+  \item DBS 是\textbf{把数据、软件、人员和应用都放在一起后的整体系统}。
+\end{itemize}
+
+\subsection{数据管理技术的发展}
+
+数据库系统不是一开始就有的，它经历了三阶段发展：
+
+\begin{enumerate}
+  \item \textbf{人工管理阶段}：数据不长期保存，基本依附于程序，几乎不能共享。
+  \item \textbf{文件系统阶段}：数据可以长期保存，但仍以文件为中心，冗余较大、共享性差、独立性差。
+  \item \textbf{数据库系统阶段}：由 DBMS 统一管理，数据结构化程度更高，共享性更强，冗余更低，独立性更好。
+\end{enumerate}
+
+考试中最喜欢问的是：\textbf{数据库系统相比文件系统，最核心的进步是什么？}
+
+可以抓住三点回答：
+
+\begin{itemize}
+  \item 数据共享性高；
+  \item 数据冗余度低；
+  \item 数据独立性强。
+\end{itemize}
+
+\subsection{数据模型与概念模型}
+
+\textbf{概念模型}是站在用户视角，对现实世界进行抽象。最常见的概念模型是 \textbf{E-R 模型}。
+
+E-R 模型的核心元素有三个：
+
+\begin{itemize}
+  \item \textbf{实体}：客观存在且可以相互区分的事物；
+  \item \textbf{属性}：实体所具有的特征；
+  \item \textbf{联系}：实体之间的关系。
+\end{itemize}
+
+例如“学生选修课程”中：
+
+\begin{itemize}
+  \item 学生、课程是实体；
+  \item 学号、姓名、课程号、课程名是属性；
+  \item 选修是联系。
+\end{itemize}
+
+\subsection{数据模型的三要素}
+
+\textcolor{red}{数据模型}是对现实世界数据特征的抽象，它通常包含三个要素：
+
+\begin{enumerate}
+  \item \textbf{数据结构}：描述对象及其联系。
+  \item \textbf{数据操作}：描述允许进行什么操作。
+  \item \textbf{数据约束}：描述必须满足什么规则。
+\end{enumerate}
+
+这个“三要素”很爱出客观题，尤其容易把“数据结构”和“存储结构”混在一起。这里的数据结构是\textbf{模型层面}的，不是程序里数组链表那种“存储方式”概念。
+
+\subsection{三级模式结构}
+
+数据库系统的三级模式结构包括：
+
+\begin{enumerate}
+  \item \textbf{外模式}：用户看到的局部逻辑结构，也叫用户模式、子模式。
+  \item \textbf{模式}：数据库全体数据的整体逻辑结构，也叫概念模式。
+  \item \textbf{内模式}：数据在存储介质上的物理结构和存储方式。
+\end{enumerate}
+
+最容易记错的是“模式”处在中间，它描述的是\textbf{全局逻辑结构}，不是物理结构。
+
+\subsection{两级映像与数据独立性}
+
+数据库系统有两级映像：
+
+\begin{itemize}
+  \item \textbf{外模式/模式映像}
+  \item \textbf{模式/内模式映像}
+\end{itemize}
+
+它们对应支持两种数据独立性：
+
+\begin{enumerate}
+  \item \textbf{逻辑数据独立性}：模式改变时，通过修改外模式/模式映像，使外模式和应用程序尽量不受影响。
+  \item \textbf{物理数据独立性}：内模式改变时，通过修改模式/内模式映像，使模式和应用程序尽量不受影响。
+\end{enumerate}
+
+记忆口诀可以用：
+
+\begin{center}
+\textbf{内模式变，保物理独立；模式变，保逻辑独立。}
+\end{center}
+
+\subsection{数据库系统的组成}
+
+数据库系统通常由以下部分组成：
+
+\begin{itemize}
+  \item 数据库
+  \item 数据库管理系统
+  \item 应用程序
+  \item 数据库管理员（DBA）
+  \item 用户
+  \item 相关硬件与软件平台
+\end{itemize}
+
+其中 DBA 负责数据库的设计、维护、权限管理、备份恢复等工作，也是客观题常考点。
+
+\subsection{绪论练习}
+
+\begin{enumerate}
+  \item 数据库、DBMS、DBS 三者分别是什么？
+  \item 数据库系统相对文件系统有哪些主要优势？
+  \item 数据模型的三要素分别是什么？
+  \item 三级模式结构中的模式、外模式、内模式分别对应什么层次？
+  \item 请判断：物理数据独立性是指模式改变而应用程序不必改变。（\hspace{1cm}）
+  \item 请判断：数据库系统中 DBMS 只是数据库的一部分数据内容。（\hspace{1cm}）
+\end{enumerate}
+
+\section{关系模型}
+
+\subsection{为什么关系模型最重要}
+
+当前主流数据库系统大多建立在关系模型基础上。关系模型最大的特点是：\textbf{用二维表来表示数据和数据之间的联系}。
+
+所以学习关系模型时，要把课本里的抽象术语和“表格”对应起来：
+
+\begin{itemize}
+  \item 一张表对应一个关系；
+  \item 一行对应一个元组；
+  \item 一列对应一个属性；
+  \item 一个属性的取值范围对应一个域。
+\end{itemize}
+
+\subsection{关系的形式化定义}
+
+设有若干域 $D_1, D_2, \dots, D_n$，它们的笛卡尔积为：
+
+\[
+D_1 \times D_2 \times \cdots \times D_n
+\]
+
+该笛卡尔积的一个子集称为\textbf{关系}。
+
+如果写成：
+
+\[
+R(A_1, A_2, \dots, A_n)
+\]
+
+则其中：
+
+\begin{itemize}
+  \item $R$ 表示关系名；
+  \item $A_1, A_2, \dots, A_n$ 表示属性名；
+  \item 关系中每一行是一个元组；
+  \item 关系的“目”或“度”是属性个数。
+\end{itemize}
+
+\subsection{关系中的核心术语}
+
+\begin{enumerate}
+  \item \textbf{关系}：通常对应一张二维表。
+  \item \textbf{关系模式}：关系的结构描述，如 $Student(Sno, Sname, Sdept)$。
+  \item \textbf{元组}：关系中的一行记录。
+  \item \textbf{属性}：关系中的一列。
+  \item \textbf{域}：某属性允许的取值范围。
+  \item \textbf{分量}：元组中一个属性对应的具体值。
+\end{enumerate}
+
+考试里很容易把“关系”和“关系模式”混掉：
+
+\begin{itemize}
+  \item 关系模式偏向\textbf{结构定义}；
+  \item 关系偏向\textbf{某一时刻的具体数据集合}。
+\end{itemize}
+
+\subsection{关系的性质}
+
+关系作为规范化二维表，通常具有以下性质：
+
+\begin{enumerate}
+  \item 列是同质的，即同一列数据来自同一域。
+  \item 不同列可以来自同一个域。
+  \item 列的次序可以交换。
+  \item 行的次序可以交换。
+  \item 任意两个元组不能完全相同。
+  \item 每个分量必须是不可再分的数据项。
+\end{enumerate}
+
+最后一点非常重要，它本质上是在强调关系模型满足\textbf{第一范式的基本要求}：属性值应当原子化、不可再分。
+
+\subsection{码、主键与外键}
+
+\begin{enumerate}
+  \item \textbf{候选键}：能够唯一标识元组的最小属性组。
+  \item \textbf{主键}：从候选键中选定的一个，用来唯一标识元组。
+  \item \textbf{外键}：某关系中的一个属性或属性组，它引用另一个关系的主键。
+\end{enumerate}
+
+例如：
+
+\begin{itemize}
+  \item 学生表 $Student(Sno, Sname, Sdept)$ 中，$Sno$ 可以是主键；
+  \item 选课表 $SC(Sno, Cno, Grade)$ 中，$Sno$ 可以作为引用学生表主键的外键。
+\end{itemize}
+
+\subsection{关系完整性}
+
+关系模型中的完整性约束主要有三类：
+
+\begin{enumerate}
+  \item \textbf{实体完整性}：主键值不能为空。
+  \item \textbf{参照完整性}：外键值必须是被参照关系中已有的主键值，或在允许时取空值。
+  \item \textbf{用户定义完整性}：由具体业务规则决定，如成绩在 0 到 100 之间。
+\end{enumerate}
+
+这三类完整性必须分清：
+
+\begin{itemize}
+  \item 主键非空看实体完整性；
+  \item 外键合法看参照完整性；
+  \item 业务规则限制看用户定义完整性。
+\end{itemize}
+
+\subsection{关系模型练习}
+
+\begin{enumerate}
+  \item 什么叫关系模式？它和关系有什么区别？
+  \item 元组、属性、域分别对应二维表中的什么？
+  \item 为什么关系中的行和列次序通常都可以交换？
+  \item 主键和外键的作用分别是什么？
+  \item 实体完整性和参照完整性分别约束什么内容？
+  \item 请判断：关系中允许出现完全相同的两个元组。（\hspace{1cm}）
+\end{enumerate}
+
+\section{关系代数}
+
+\subsection{为什么关系代数是 SQL 的理论基础}
+
+关系代数是一种形式化查询语言，它直接回答“怎样从已有关系中推出新关系”。考试中虽然最终常落在 SQL 上，但很多 SQL 题本质上都可以先用关系代数理解。
+
+本讲要先掌握最核心的几种运算：\textbf{选择、投影、连接}，再补上并、差、交、笛卡尔积。
+
+\subsection{选择运算}
+
+\textcolor{red}{选择}记作 $\sigma$，作用是\textbf{从行的角度筛选元组}。
+
+例如：
+
+\[
+\sigma_{Sdept='CS'}(Student)
+\]
+
+表示从学生关系中选出系别为 CS 的元组。
+
+记忆关键词：\textbf{选择看行，条件写下标。}
+
+\subsection{投影运算}
+
+\textcolor{red}{投影}记作 $\Pi$，作用是\textbf{从列的角度选取属性}。
+
+例如：
+
+\[
+\Pi_{Sname,Sdept}(Student)
+\]
+
+表示只保留学生姓名和系别两列。
+
+记忆关键词：\textbf{投影看列，保留所需属性。}
+
+\subsection{连接运算}
+
+连接的核心思想是：把两个关系中有关联的元组合并起来。
+
+最常见的是\textbf{自然连接}。例如学生表和选课表通过 $Sno$ 相连：
+
+\[
+Student \bowtie SC
+\]
+
+它的本质是：先找公共属性值相等的元组，再把它们拼接成更大的元组。
+
+考试中如果题目问“查询某课程的学生姓名”，通常就要想到：
+
+\begin{enumerate}
+  \item 先把 Student 和 SC 连接；
+  \item 再筛选目标课程；
+  \item 最后投影出姓名。
+\end{enumerate}
+
+\subsection{集合运算}
+
+关系代数中还有几种传统集合运算：
+
+\begin{itemize}
+  \item 并：$R \cup S$
+  \item 差：$R - S$
+  \item 交：$R \cap S$
+  \item 笛卡尔积：$R \times S$
+\end{itemize}
+
+其中并、差、交要注意一个前提：\textbf{两个关系必须同元}，也就是属性个数对应一致、属性域相容。
+
+\subsection{关系代数做题主线}
+
+把自然语言题目转成关系代数时，建议按以下顺序思考：
+
+\begin{enumerate}
+  \item 题目最后要什么列？先想投影。
+  \item 题目需要哪些表联合起来？再想连接。
+  \item 题目有哪些限定条件？再补选择。
+\end{enumerate}
+
+例如：查询选修了课程 C1 的学生姓名。
+
+可写为：
+
+\[
+\Pi_{Sname}(\sigma_{Cno='C1'}(Student \bowtie SC))
+\]
+
+\subsection{关系代数练习}
+
+\begin{enumerate}
+  \item 选择运算和投影运算分别是对“行”还是对“列”操作？
+  \item 为什么说连接运算是多表查询的核心？
+  \item 并、差、交运算为什么要求两个关系同元？
+  \item 把“查询所有学生姓名”写成一个简单的投影表达式。
+  \item 把“查询计算机系学生信息”写成一个简单的选择表达式。
+  \item 请判断：投影运算的主要作用是筛选满足条件的元组。（\hspace{1cm}）
+\end{enumerate}
+
+\section{SQL 语言}
+
+\subsection{SQL 的定位}
+
+SQL 是关系数据库的标准语言，核心优点是：\textbf{用户只需要说“要什么”，不必详细说明“怎么做”}。因此它属于高度非过程化语言。
+
+从考试角度，本讲最需要掌握三类 SQL：
+
+\begin{itemize}
+  \item \textbf{DDL}：定义数据库对象，如 \texttt{CREATE TABLE}；
+  \item \textbf{DML}：插入、修改、删除数据，如 \texttt{INSERT}、\texttt{UPDATE}、\texttt{DELETE}；
+  \item \textbf{DQL}：查询数据，核心是 \texttt{SELECT}。
+\end{itemize}
+
+\subsection{创建表}
+
+创建表的基本格式：
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Student (
+    Sno CHAR(9) PRIMARY KEY,
+    Sname VARCHAR(20) NOT NULL,
+    Ssex CHAR(2),
+    Sage SMALLINT,
+    Sdept VARCHAR(20)
+);
+\end{lstlisting}
+
+这里常考点有三个：
+
+\begin{itemize}
+  \item \texttt{PRIMARY KEY} 定义主键；
+  \item \texttt{NOT NULL} 表示该列不能为空；
+  \item 数据类型和约束可以同时写在列定义中。
+\end{itemize}
+
+\subsection{基本查询结构}
+
+SQL 查询的核心结构是：
+
+\begin{lstlisting}[language=SQL]
+SELECT 目标列
+FROM 表名
+WHERE 条件
+GROUP BY 分组列
+HAVING 分组条件
+ORDER BY 排序列;
+\end{lstlisting}
+
+在本讲中，优先掌握前三项：\texttt{SELECT}、\texttt{FROM}、\texttt{WHERE}。
+
+\subsection{单表查询}
+
+例如查询所有学生的学号和姓名：
+
+\begin{lstlisting}[language=SQL]
+SELECT Sno, Sname
+FROM Student;
+\end{lstlisting}
+
+例如查询计算机系学生：
+
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM Student
+WHERE Sdept = 'CS';
+\end{lstlisting}
+
+这里和关系代数的对应关系要建立起来：
+
+\begin{itemize}
+  \item \texttt{SELECT Sno, Sname} 对应投影；
+  \item \texttt{WHERE Sdept = 'CS'} 对应选择。
+\end{itemize}
+
+\subsection{连接查询}
+
+例如查询学生姓名及其选课成绩：
+
+\begin{lstlisting}[language=SQL]
+SELECT Student.Sno, Sname, Cno, Grade
+FROM Student, SC
+WHERE Student.Sno = SC.Sno;
+\end{lstlisting}
+
+这一类题关键不是死背格式，而是分两步理解：
+
+\begin{enumerate}
+  \item \texttt{FROM Student, SC} 先把两个表放到查询范围内；
+  \item \texttt{WHERE Student.Sno = SC.Sno} 再写连接条件，避免得到无意义笛卡尔积。
+\end{enumerate}
+
+\subsection{嵌套查询}
+
+例如查询选修了课程 C1 的学生姓名：
+
+\begin{lstlisting}[language=SQL]
+SELECT Sname
+FROM Student
+WHERE Sno IN (
+    SELECT Sno
+    FROM SC
+    WHERE Cno = 'C1'
+);
+\end{lstlisting}
+
+嵌套查询适合处理“先查出一批学号，再根据学号查学生姓名”这种两步式问题。
+
+\subsection{数据更新}
+
+\textbf{插入：}
+
+\begin{lstlisting}[language=SQL]
+INSERT INTO Student(Sno, Sname, Sdept)
+VALUES ('2025001', 'Li', 'CS');
+\end{lstlisting}
+
+\textbf{修改：}
+
+\begin{lstlisting}[language=SQL]
+UPDATE Student
+SET Sage = 20
+WHERE Sno = '2025001';
+\end{lstlisting}
+
+\textbf{删除：}
+
+\begin{lstlisting}[language=SQL]
+DELETE FROM Student
+WHERE Sno = '2025001';
+\end{lstlisting}
+
+这里很容易出判断题：\texttt{DELETE} 删除的是表中的元组，不是删除表结构；删除表结构应使用 \texttt{DROP TABLE}。
+
+\subsection{空值处理}
+
+空值 \texttt{NULL} 不是 0，也不是空字符串，它表示\textbf{未知、不存在或无意义}。
+
+判断空值时不能写成：
+
+\begin{lstlisting}[language=SQL]
+WHERE Sage = NULL
+\end{lstlisting}
+
+正确写法是：
+
+\begin{lstlisting}[language=SQL]
+SELECT Sname
+FROM Student
+WHERE Sage IS NULL;
+\end{lstlisting}
+
+以及：
+
+\begin{lstlisting}[language=SQL]
+SELECT Sname
+FROM Student
+WHERE Sage IS NOT NULL;
+\end{lstlisting}
+
+\subsection{视图}
+
+\textcolor{red}{视图}是从一个或多个基本表导出的虚表。
+
+例如建立计算机系学生视图：
+
+\begin{lstlisting}[language=SQL]
+CREATE VIEW CS_Student
+AS
+SELECT Sno, Sname, Sdept
+FROM Student
+WHERE Sdept = 'CS';
+\end{lstlisting}
+
+视图的两个常见作用：
+
+\begin{itemize}
+  \item 简化复杂查询；
+  \item 从安全角度隐藏不需要暴露的数据。
+\end{itemize}
+
+\subsection{SQL 练习}
+
+\begin{enumerate}
+  \item \texttt{CREATE TABLE}、\texttt{INSERT}、\texttt{SELECT} 分别属于哪类 SQL？
+  \item 单表查询中，\texttt{SELECT}、\texttt{FROM}、\texttt{WHERE} 三部分分别起什么作用？
+  \item 多表查询时，为什么通常需要写连接条件？
+  \item 判断空值时为什么不能使用 \texttt{= NULL}？
+  \item 视图和基本表有什么区别？
+  \item 请判断：\texttt{DELETE FROM Student;} 的作用是删除 Student 表的结构。（\hspace{1cm}）
+\end{enumerate}
+
+\section{易混点总结}
+
+\begin{enumerate}
+  \item \textbf{DB、DBMS、DBS}：一个是数据集合，一个是管理软件，一个是完整系统。
+  \item \textbf{外模式、模式、内模式}：用户局部逻辑、全局逻辑、物理存储，层次不要倒。
+  \item \textbf{逻辑独立性与物理独立性}：模式变保逻辑独立，内模式变保物理独立。
+  \item \textbf{关系与关系模式}：前者偏具体数据，后者偏结构定义。
+  \item \textbf{选择与投影}：选择看行，投影看列。
+  \item \textbf{主键与外键}：主键唯一标识本表元组，外键建立表间联系。
+  \item \textbf{DELETE 与 DROP}：前者删数据，后者删对象结构。
+  \item \textbf{NULL}：不是普通值，判断必须用 \texttt{IS NULL} 或 \texttt{IS NOT NULL}。
+\end{enumerate}
+
+\section{本讲知识框架}
+
+建议把本讲整理成下面这条主线：
+
+\begin{center}
+\begin{tabular}{|>{\centering\arraybackslash}m{1.8cm}|>{\centering\arraybackslash}m{2.6cm}|>{\centering\arraybackslash}m{3.4cm}|>{\centering\arraybackslash}m{3.6cm}|}
+\hline
+主题 & 核心问题 & 典型内容 & 高频考点 \\
+\hline
+绪论 & 数据库系统是什么 & DB、DBMS、DBS、三级模式 & 基本概念、数据独立性 \\
+\hline
+关系模型 & 数据怎样抽象成表 & 关系、元组、属性、码、完整性 & 术语辨析、主外键 \\
+\hline
+关系代数 & 怎样形式化查询 & 选择、投影、连接、集合运算 & 表达式改写 \\
+\hline
+SQL & 怎样实际操作数据库 & 建表、查询、更新、空值、视图 & 查询语句、易错语法 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{典型例题}
+
+\subsection{例题1：DBMS 与数据库的区别}
+
+\textbf{题目：}数据库和数据库管理系统有什么区别？
+
+\textbf{分析：}数据库是被存储和管理的数据集合，DBMS 是管理这些数据的软件。
+
+\textbf{答案：}数据库是对象，DBMS 是对数据库进行定义、操纵、控制和维护的软件。
+
+\subsection{例题2：数据独立性判断}
+
+\textbf{题目：}当数据库的物理存储方式改变，而应用程序基本不受影响，这体现的是哪一种数据独立性？
+
+\textbf{分析：}内模式变化而上层不变，对应物理数据独立性。
+
+\textbf{答案：}物理数据独立性。
+
+\subsection{例题3：关系模型中的术语}
+
+\textbf{题目：}在学生表中，一条学生记录对应关系模型中的什么？
+
+\textbf{分析：}二维表中的一行，对应一个元组。
+
+\textbf{答案：}元组。
+
+\subsection{例题4：关系代数中的选择与投影}
+
+\textbf{题目：}查询 Student 表中所有学生姓名，应使用选择还是投影？
+
+\textbf{分析：}只保留需要的列，是投影。
+
+\textbf{答案：}投影。
+
+\subsection{例题5：SQL 空值判断}
+
+\textbf{题目：}若要查询年龄为空的学生，\texttt{WHERE Sage = NULL} 是否正确？
+
+\textbf{分析：}NULL 不能用普通比较运算，应使用 \texttt{IS NULL}。
+
+\textbf{答案：}不正确，正确写法是 \texttt{WHERE Sage IS NULL}。
+
+\subsection{例题6：连接查询思想}
+
+\textbf{题目：}查询学生姓名和其所选课程号，需要使用单表查询还是多表连接查询？
+
+\textbf{分析：}学生姓名在 Student 表，课程号通常在 SC 表，需要跨表获得信息。
+
+\textbf{答案：}多表连接查询。
+
+\section{课堂练习}
+
+\subsection{基础练习}
+
+\begin{enumerate}
+  \item 数据库系统的四个基本概念分别是什么？
+  \item 为什么说数据库系统阶段比文件系统阶段更先进？
+  \item 三级模式结构中，哪个层次描述全局逻辑结构？
+  \item 关系中的元组、属性、域分别如何理解？
+  \item 选择、投影、连接三种关系代数运算各解决什么问题？
+\end{enumerate}
+
+\subsection{判断与选择}
+
+\begin{enumerate}
+  \item 关系模型中表的行顺序和列顺序通常都具有固定意义，不能改变。（\hspace{1cm}）
+  \item 主键允许取空值。（\hspace{1cm}）
+  \item SQL 中 \texttt{SELECT} 语句主要用于数据查询。（\hspace{1cm}）
+  \item 多表查询若没有连接条件，可能得到笛卡尔积结果。（\hspace{1cm}）
+  \item 视图是实际存放数据的独立基本表。（\hspace{1cm}）
+  \item \texttt{IS NULL} 常用于判断空值。（\hspace{1cm}）
+\end{enumerate}
+
+\subsection{计算与分析}
+
+\begin{enumerate}
+  \item 请说明逻辑数据独立性和物理数据独立性的区别。
+  \item 设关系模式为 $Student(Sno, Sname, Sdept)$，请写出“查询所有学生姓名”的关系代数表达式。
+  \item 设 Student 表和 SC 表通过 Sno 联系，请说明“查询选课学生姓名”为什么需要连接运算。
+  \item 请写出查询系别为 CS 的学生姓名的 SQL 语句。
+  \item 请写出查询年龄为空学生姓名的 SQL 语句。
+  \item 主键、外键、实体完整性、参照完整性之间有什么内在联系？
+\end{enumerate}
+
+\subsection{综合小题}
+
+\textbf{题目：}某教务系统中有两个基本表：
+
+\begin{itemize}
+  \item 学生表 Student(Sno, Sname, Sdept)
+  \item 选课表 SC(Sno, Cno, Grade)
+\end{itemize}
+
+请完成下面三个问题：
+
+\begin{enumerate}
+  \item 若要求“查询所有学生姓名”，应优先想到关系代数中的哪一种基本运算？
+  \item 若要求“查询计算机系学生姓名”，在上一问基础上还需要增加哪一种运算思想？
+  \item 若要求“查询选修了课程 C1 的学生姓名”，为什么通常既要考虑连接，也要考虑条件筛选？
+\end{enumerate}
+
+\section{课后小测参考答案}
+
+\begin{enumerate}
+  \item 数据、数据库、数据库管理系统、数据库系统。
+  \item 因为数据库系统具有更高的数据共享性、更低的冗余度以及更强的数据独立性。
+  \item 模式。
+  \item 元组对应行，属性对应列，域对应属性取值范围。
+  \item 选择用于筛行，投影用于选列，连接用于把相关表的信息合并起来。
+  \item 第1题错；第2题错；第3题对；第4题对；第5题错；第6题对。
+  \item 逻辑数据独立性关注模式变化对外模式和应用的影响；物理数据独立性关注内模式变化对模式和应用的影响。
+  \item $\Pi_{Sname}(Student)$。
+  \item 因为学生姓名和选课信息分布在不同关系中，必须按公共属性把相关元组合并后才能得到结果。
+  \item \texttt{SELECT Sname FROM Student WHERE Sdept = 'CS';}
+  \item \texttt{SELECT Sname FROM Student WHERE Sage IS NULL;}
+  \item 主键支撑实体完整性，外键支撑参照完整性，两者共同保证关系间和关系内数据的正确性。
+\end{enumerate}
+
+综合小题参考：第 1 问优先想到投影；第 2 问在投影基础上增加选择；第 3 问因为学生姓名在 Student 表、选课信息在 SC 表，所以要先建立连接，再用课程号条件做筛选，最后投影出姓名。
+
+\subsection{分节练习参考答案}
+
+\textbf{绪论练习参考：}
+
+\begin{enumerate}
+  \item DB 是数据集合，DBMS 是管理数据库的软件，DBS 是由数据库、DBMS、应用程序、人员等构成的整体系统。
+  \item 共享性高、冗余度低、独立性强。
+  \item 数据结构、数据操作、数据约束。
+  \item 外模式是用户局部逻辑结构，模式是全局逻辑结构，内模式是物理存储结构。
+  \item 错。物理数据独立性对应的是内模式改变而上层尽量不受影响。
+  \item 错。DBMS 是管理数据库的软件，不是数据本身。
+\end{enumerate}
+
+\textbf{关系模型练习参考：}
+
+\begin{enumerate}
+  \item 关系模式是关系的结构描述；关系是某一时刻符合该结构的数据集合。
+  \item 元组对应表中行，属性对应列，域对应取值范围。
+  \item 因为关系本质上是集合，行列次序不影响其逻辑意义。
+  \item 主键唯一标识元组，外键建立表之间的联系。
+  \item 实体完整性约束主键不能为空；参照完整性约束外键取值必须合法。
+  \item 错。关系中不允许出现完全相同的两个元组。
+\end{enumerate}
+
+\textbf{关系代数练习参考：}
+
+\begin{enumerate}
+  \item 选择针对行，投影针对列。
+  \item 因为连接可以把分散在不同关系中的相关信息按公共属性组合起来。
+  \item 因为并、差、交都是集合运算，必须保证两个关系结构相容。
+  \item $\Pi_{Sname}(Student)$。
+  \item $\sigma_{Sdept='CS'}(Student)$。
+  \item 错。筛选满足条件的元组是选择运算。
+\end{enumerate}
+
+\textbf{SQL 练习参考：}
+
+\begin{enumerate}
+  \item 分别属于 DDL、DML、DQL。
+  \item \texttt{SELECT} 指定结果列，\texttt{FROM} 指定数据来源，\texttt{WHERE} 指定筛选条件。
+  \item 因为否则很可能得到无意义的笛卡尔积，不能正确反映表间联系。
+  \item 因为 NULL 不是普通值，不能用等号比较，应使用 \texttt{IS NULL} 或 \texttt{IS NOT NULL}。
+  \item 视图是从基本表导出的虚表，本身主要保存定义而不一定独立存放数据。
+  \item 错。它删除的是 Student 表中的所有元组，不是表结构。
+\end{enumerate}
+
+\section{本讲小结}
+
+本讲真正要建立的是数据库部分的第一条主线：\textbf{先理解数据库系统层面的基本概念，再理解关系模型怎样把现实世界抽象成表，最后掌握 SQL 如何对这些表进行定义和查询}。
+
+如果把本讲学扎实，后续的安全性、完整性、规范化、数据库设计都会更顺；如果本讲只停留在记缩写、记语句而不理解联系，后面关系代数和 SQL 综合题就会很容易乱。
+
+下一讲将继续进入\textbf{数据库安全性、完整性、关系数据理论、数据库设计以及恢复与并发控制}，重点会从“会看表、会查表”转向“会约束表、会设计表、会保证系统正确运行”。
+
+\end{document}
