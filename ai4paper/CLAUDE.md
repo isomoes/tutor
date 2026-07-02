@@ -12,6 +12,7 @@ ai4paper/
 ├── common.typ            # Shared library: theorion, colors, redt()/bluet()/greent()
 ├── references.bib        # Bibliography (IEEE style)
 ├── outline.md            # Course plan (source of truth for scope)
+├── figures/              # Standalone CeTZ figures + compiled pdfs (included as images)
 └── chapters/             # One file per chapter, numbered by phase order
     ├── 01-foundations.typ
     ├── ...
