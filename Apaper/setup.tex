@@ -1,0 +1,119 @@
+\documentclass{beamer}
+\usepackage{../typesetting/styles/slide-zh}
+
+% Set CJK fonts to local Noto fonts
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans Mono CJK SC}
+
+% Document information
+\title{\red{APaper}: \blue{AI} + Paper = \green{研究神器}}
+\subtitle{基于MCP服务器的智能论文助手}
+\author{isomo}
+% \institute{机构名称}
+\date{\today}
+
+\begin{document}
+
+% Title frame
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Outline frame
+\begin{frame}{大纲}
+  \tableofcontents
+\end{frame}
+
+% Section 1: What is APaper?
+\section{什么是APaper？}
+\begin{frame}{APaper = \red{AI} + Paper}
+  \begin{itemize}
+    \item \blue{Auto + Paper}: 自动化论文搜索和管理
+    \item \green{AI + Paper}: 智能化论文分析和整理
+    \item 基于All-in-MCP服务器架构
+    \item 让研究变得更轻松、更有趣！
+  \end{itemize}
+\end{frame}
+
+% Section 2: Simple Demo
+\section{简单演示}
+\begin{frame}{第一步：搜索论文主题}
+  \begin{block}{演示场景}
+    想研究"密码学"相关论文怎么办？
+  \end{block}
+  
+  \pause
+  
+  \begin{itemize}
+    \item \red{IACR ePrint Archive}: 密码学顶级预印本库
+    \item \blue{Google Scholar}: 跨学科论文搜索
+    \item \green{CryptoBib}: 密码学专业文献库
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{第二步：一键收集所有相关论文}
+  \begin{center}
+    \huge Search → Read → Summarize
+  \end{center}
+  
+  \begin{itemize}
+    \item 自动下载PDF文件
+    \item 提取论文元数据（作者、日期、摘要）
+    \item 生成BibTeX引用格式
+    \item 智能分类和整理
+  \end{itemize}
+\end{frame}
+
+% Section 3: Configuration
+\section{配置教程}
+\begin{frame}{如何配置APaper？}
+  \begin{block}{前置要求}
+    \begin{itemize}
+      \item Python 3.12+ 
+      \item UV包管理器
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{安装方式}
+    \begin{itemize}
+      \item \texttt{pip install all-in-mcp} (推荐)
+      \item 或从源码安装: \texttt{git clone + uv sync}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{MCP客户端集成}
+  \begin{block}{Claude Desktop配置示例}
+    \begin{verbatim}
+{
+  "mcpServers": {
+    "all-in-mcp": {
+      "command": "uv",
+      "args": ["run", "all-in-mcp"],
+      "cwd": "/path/to/all-in-mcp"
+    }
+  }
+}
+    \end{verbatim}
+  \end{block}
+\end{frame}
+
+% Section 4: Next Steps
+\section{下一步发展}
+\begin{frame}{创新点：如何找到论文写作的突破口？}
+  \begin{itemize}
+    \item \red{智能代码生成}: 根据论文需求自动生成实验代码
+    \item \blue{写作计划优化}: AI助手帮你制定研究roadmap
+    \item \green{创新点发现}: 通过文献分析找到研究gap
+  \end{itemize}
+\end{frame}
+
+% Thank you slide
+\begin{frame}
+  \centering
+  \LARGE 谢谢
+
+\end{frame}
+
+\end{document}

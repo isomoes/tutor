@@ -1,0 +1,6 @@
+[submodule "typesetting"]
+	path = typesetting
+	url = https://github.com/jiahaoxiang2000/typesetting.git
+[submodule ".claude"]
+	path = .claude
+	url = https://github.com/jiahaoxiang2000/claude-conf.git
